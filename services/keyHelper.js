@@ -18,7 +18,7 @@ function deletePublicKey(userId) {
 }
 
 module.exports.keyHelper = {
-    addPublicKey = addPublicKey,
-    deletePublicKey = deletePublicKey,
-    getPublicKey = getPublicKey
+    addPublicKey: addPublicKey,
+    deletePublicKey: deletePublicKey,
+    getPublicKey: getPublicKey
 }
