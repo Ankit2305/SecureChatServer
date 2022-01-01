@@ -18,7 +18,7 @@ const MAX_CHANNEL_SIZE = 200
 app.get('/channel', (req, res) => {
     let response = ""
     channel.forEach((message) => {
-        response = response.concat(response, message)
+        response = response.concat(response, JSON.stringify(message))
         response = response.concat(response, "\n\n")
     })
     res.send(response)
