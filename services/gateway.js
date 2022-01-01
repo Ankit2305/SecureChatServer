@@ -5,12 +5,23 @@ const webSocketCallbacks = require('./webSocketHelper').webSocketCallbacks
 const keyHelper = require('./keyHelper')
 
 const app = express()
+channel = []
 
 app.use(express.static(__dirname + './../public'))
 app.use(express.json())
 
 app.post('/login', (req, res) => {
     res.send("Login...")
+})
+
+const MAX_CHANNEL_SIZE = 200
+app.get('/channel', (req, res) => {
+    let response = ""
+    channel.forEach((message) => {
+        response = response.concat(response, message)
+        response = response.concat(response, "\n\n")
+    })
+    res.send(response)
 })
 
 //TODO: move key routes to different module
@@ -33,6 +44,10 @@ wsServer.on('request', (req) => {
     webSocketCallbacks.addConnection(connection)
 
     connection.on('message', (message) => {
+        channel.push(message)
+        if(channel.length == MAX_CHANNEL_SIZE) {
+            channel.shift()
+        }
         try {
             webSocketCallbacks.onMessageReceived(JSON.parse(message.utf8Data), connection)
         } catch {
