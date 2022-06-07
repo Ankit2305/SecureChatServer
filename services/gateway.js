@@ -3,6 +3,7 @@ const http = require('http')
 const express = require('express')
 const webSocketCallbacks = require('./webSocketHelper').webSocketCallbacks
 const keyHelper = require('./keyHelper')
+const db = require('./db')
 
 const app = express()
 channel = []
@@ -22,6 +23,11 @@ app.get('/channel', (req, res) => {
         response = response.concat(response, "\n\n")
     })
     res.send(response)
+})
+
+app.get('/group/:groupId', async (req, res) => {
+    let group = await db.fetchGroupById(req.params.groupId)
+    res.send(JSON.stringify(group))
 })
 
 //TODO: move key routes to different module
